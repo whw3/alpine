@@ -1,11 +1,11 @@
 #/bin/bash
 #ALPINE_VERSION="3.5.2"
-#RELEASE="3.5" 
+#RELEASE="3.5"
+S6_VERSION="v1.19.1.1"
 ALPINE_VERSION="3.6.2"
 RELEASE="3.6"
 MIRROR="http://dl-cdn.alpinelinux.org/alpine"
 PACKAGES="alpine-baselayout,alpine-keys,apk-tools,libc-utils"
-
 cat << EOF > options 
 export RELEASE="v$RELEASE"
 export MIRROR="$MIRROR"
@@ -17,9 +17,15 @@ EOF
 cat << EOF > Dockerfile
 FROM scratch
 ADD alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz /
+ADD s6-overlay-$S6_VERSION-armhf.tar.gz /
 COPY .* /root/
-RUN apk --no-cache add s6 bash bash-completion nano
+RUN apk --no-cache add bash bash-completion nano
+ENTRYPOINT ["/init"]
 EOF
+
+if [[ ! -f s6-overlay-$S6_VERSION-armhf.tar.gz ]] ; then
+    wget -O s6-overlay-$S6_VERSION-armhf.tar.gz https://github.com/just-containers/s6-overlay/releases/download/$S6_VERSION/s6-overlay-armhf.tar.gz
+fi
 
 [[ ! -f alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz ]] && \
   wget https://nl.alpinelinux.org/alpine/v$RELEASE/releases/armhf/alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz
