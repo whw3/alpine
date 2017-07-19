@@ -8,8 +8,8 @@ RUN apk --no-cache add bash bash-completion nano
 ENTRYPOINT ["/init"]
 ```
 
-See https://www.alpinelinux.org/downloads/ for updated mini-root tarballs
-See https://github.com/just-containers/s6-overlay/releases for updated s6-overlay tarballs
+* See https://www.alpinelinux.org/downloads/ for updated mini-root tarballs
+* See https://github.com/just-containers/s6-overlay/releases for updated s6-overlay tarballs
 
 ***nano*** ./build.sh prior to running to update version info if newer tarballs are released
 
