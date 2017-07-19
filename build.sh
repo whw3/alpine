@@ -23,9 +23,8 @@ RUN apk --no-cache add bash bash-completion nano
 ENTRYPOINT ["/init"]
 EOF
 
-if [[ ! -f s6-overlay-$S6_VERSION-armhf.tar.gz ]] ; then
+[[ ! -f s6-overlay-$S6_VERSION-armhf.tar.gz ]] && \
     wget -O s6-overlay-$S6_VERSION-armhf.tar.gz https://github.com/just-containers/s6-overlay/releases/download/$S6_VERSION/s6-overlay-armhf.tar.gz
-fi
 
 [[ ! -f alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz ]] && \
   wget https://nl.alpinelinux.org/alpine/v$RELEASE/releases/armhf/alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz
