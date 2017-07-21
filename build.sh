@@ -19,7 +19,7 @@ FROM scratch
 ADD alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz /
 ADD s6-overlay-$S6_VERSION-armhf.tar.gz /
 COPY .* /root/
-RUN apk --no-cache add bash bash-completion nano
+RUN apk --no-cache add bash bash-completion nano git
 ENTRYPOINT ["/init"]
 EOF
 
