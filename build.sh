@@ -19,7 +19,11 @@ FROM scratch
 ADD alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz /
 ADD s6-overlay-$S6_VERSION-armhf.tar.gz /
 COPY .* /root/
-RUN apk --no-cache add bash bash-completion nano git
+RUN apk --no-cache add bash bash-completion nano git 
+RUN apk --no-cache add tzdata ; \
+cp /usr/share/zoneinfo/America/Chicago /etc/localtime; \
+echo "America/Chicago" > /etc/timezone; \
+apk del tzdata
 ENTRYPOINT ["/init"]
 EOF
 
