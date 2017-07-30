@@ -1,10 +1,14 @@
 # Alpine Mini-Root Base image
 ```
 FROM scratch
-ADD alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz /
-ADD s6-overlay-$S6_VERSION-armhf.tar.gz /
+ADD alpine-minirootfs-3.6.2-armhf.tar.gz /
+ADD s6-overlay-v1.19.1.1-armhf.tar.gz /
 COPY .* /root/
-RUN apk --no-cache add bash bash-completion nano
+RUN apk --no-cache add bash bash-completion nano git 
+RUN apk --no-cache add tzdata ; \
+cp /usr/share/zoneinfo/America/Chicago /etc/localtime; \
+echo "America/Chicago" > /etc/timezone; \
+apk del tzdata
 ENTRYPOINT ["/init"]
 ```
 
@@ -13,6 +17,7 @@ ENTRYPOINT ["/init"]
 
 ***nano*** ./build.sh prior to running to update version info if newer tarballs are released
 
+You might also want to adjust the time zone if you are not US/Central time.
 
 ```
 FROM whw3/alpine
