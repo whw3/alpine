@@ -16,7 +16,6 @@ ENTRYPOINT ["/init"]
 * See https://github.com/just-containers/s6-overlay/releases for updated s6-overlay tarballs
 
 <s>***nano*** ./build.sh prior to running to update version info if newer tarballs are released</s>
-
 Automagically updates to the latest version now
 
 You might also want to adjust the time zone if you are not US/Central time.
