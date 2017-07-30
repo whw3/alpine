@@ -12,7 +12,7 @@ apk del tzdata
 ENTRYPOINT ["/init"]
 ```
 
-* See https://www.alpinelinux.org/downloads/ for updated mini-root tarballs
+<s>* See https://www.alpinelinux.org/downloads/ for updated mini-root tarballs</s>
 * See https://github.com/just-containers/s6-overlay/releases for updated s6-overlay tarballs
 
 <s>***nano*** ./build.sh prior to running to update version info if newer tarballs are released</s>
