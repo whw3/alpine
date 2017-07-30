@@ -2,3 +2,4 @@
 *.tar.gz*
 options
 Dockerfile
+latest-releases.yaml
