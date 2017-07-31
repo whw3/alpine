@@ -3,3 +3,5 @@
 options
 Dockerfile
 latest-releases.yaml
+TIMEZONE
+s6-tags.json

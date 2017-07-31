@@ -1,0 +1,15 @@
+[
+    {
+        "tag":"3.5",
+        "branch":"v3.5"
+    },
+    {
+        "tag":"3.6",
+        "branch":"v3.6"
+    },
+    {
+        "tag":"latest",
+        "branch":"latest-stable"
+    }
+    
+]
