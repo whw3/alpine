@@ -9,9 +9,12 @@ do
     TZ="America/Chicago"
     [[ -f TIMEZONE ]] && source TIMEZONE
     TZ=$(whiptail --inputbox "Default timezone" 8 78 "$TZ" --title "Alpine Builder" 3>&1 1>&2 2>&3)
-    exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
-    if [[ ! "$(grep -c -w "$TZ" zone.csv )" = "1" ]]; then
+   exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
+    if [[ ! "$(grep -c -w "$TZ" root/zone.csv )" = "1" ]]; then
         TZ=""
+        TIMEZONES=( $(cat root/zone.csv | cut -d, -f3|sort| sed 's/\"//g'|awk '!/^ / && NF {print $1 " [] off"}') )
+        TZ=$(whiptail --title "Timezone Config" --radiolist --separate-output "Select Timezone" 20 48 12 "${TIMEZONES[@]}" 3>&1 1>&2 2>&3)    
+        exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
     fi
 done
 echo 'export TZ="$TZ"' > TIMEZONE
@@ -20,7 +23,7 @@ echo 'export TZ="$TZ"' > TIMEZONE
 wget -qO s6-tags.json https://api.github.com/repos/just-containers/s6-overlay/tags
 eval "$(jq -r '.[0] | @sh "S6_VERSION=\(.name)"' s6-tags.json )"
 
-TARGET_LIST=($(jq '.[]| "\(.tag) \(.branch)   off"' buildlist.json|sed 's/\"//g'))
+TARGET_LIST=($(jq '.[]| "\(.tag) \(.branch)   on"' buildlist.json|sed 's/\"//g'))
 BUILDLIST=$(whiptail --title "Alpine Build Menu" --checklist --separate-output "Select Version" 12 48 6 "${TARGET_LIST[@]}" 3>&1 1>&2 2>&3)
 exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
 for RELEASE in $BUILDLIST; do
@@ -42,11 +45,12 @@ EOF
 FROM scratch
 ADD alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz /
 ADD s6-overlay-$S6_VERSION-armhf.tar.gz /
-COPY .* /root/
+COPY root /root/
 RUN apk --no-cache add bash bash-completion nano git tzdata
-RUN echo "$TZ" > /etc/timezone; cp /usr/share/zoneinfo/$TZ /etc/localtime && exit 0 ; exit 1
+RUN chmod 0700 /root/bin/tzconfig && echo "$TZ" > /etc/timezone; cp /usr/share/zoneinfo/$TZ /etc/localtime && exit 0 ; exit 1
 RUN apk del tzdata 
 ENTRYPOINT ["/init"]
+CMD ["/bin/bash"]
 EOF
 
     [[ ! -f s6-overlay-$S6_VERSION-armhf.tar.gz ]] && \

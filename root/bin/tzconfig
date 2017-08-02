@@ -1,0 +1,18 @@
+#!/bin/bash
+apk update
+apk add tzdata newt
+TZ=""
+while [ "$TZ" = "" ]
+do
+    TZ=$(</etc/timezone)
+    TZ=$(whiptail --title "tzconfig" --inputbox "Set Default timezone" 8 78 "$TZ" 3>&1 1>&2 2>&3)
+    exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
+    if [[ ! "$(grep -c -w "$TZ" ~/zone.csv )" = "1" ]]; then
+        TZ=""
+        TIMEZONES=( $(cat ~/zone.csv | cut -d, -f3|sort| sed 's/\"//g'|awk '!/^ / && NF {print $1 " [] off"}') )
+        TZ=$(whiptail --title "tzconfig" --radiolist --separate-output "Select Timezone" 20 48 12 "${TIMEZONES[@]}" 3>&1 1>&2 2>&3)
+        exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
+    fi
+done
+echo "$TZ" > /etc/timezone; cp /usr/share/zoneinfo/$TZ /etc/localtime
+apk del tzdata newt
