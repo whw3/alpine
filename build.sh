@@ -11,7 +11,6 @@ do
     TZ=$(whiptail --inputbox "Default timezone" 8 78 "$TZ" --title "Alpine Builder" 3>&1 1>&2 2>&3)
    exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
     if [[ ! "$(grep -c -w "$TZ" root/zone.csv )" = "1" ]]; then
-        TZ=""
         TIMEZONES=( $(cat root/zone.csv | cut -d, -f3|sort| sed 's/\"//g'|awk '!/^ / && NF {print $1 " [] off"}') )
         TZ=$(whiptail --title "Timezone Config" --radiolist --separate-output "Select Timezone" 20 48 12 "${TIMEZONES[@]}" 3>&1 1>&2 2>&3)    
         exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
