@@ -4,7 +4,7 @@ Alpine base-image configured with
 * nano
 * git
 * s6-overlay
-* properly set timezone configuration
+* properly set timezone configuration. Can be reconfigured inside container by running ***/root/bin/tzconfig***
 
 ### Assumptions
 * home for docker build images is ***/srv/docker***
