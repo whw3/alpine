@@ -14,7 +14,7 @@ To build the image(s) run ***/srv/docker/alpine/build.sh***
 mkdir -p /srv/docker
 cd /srv/docker
 git clone https://github.com/whw3/alpine.git
-cd golang-official
+cd alpine
 chmod 0700 build.sh
 ./build.sh
 ```
