@@ -2,8 +2,8 @@
 if  [[ "$(which jq)" = "" ]]; then
     whiptail --title "Missing Required File" --yesno "jq is required for this script to function.\nShould I install it for you?" 8 48 "$TZ"  3>&1 1>&2 2>&3
     exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
-	apt-get update
-	apt-get install -y jq
+    apt-get update
+    apt-get install -y jq
 fi
 TZ=""
 while [ "$TZ" = "" ]
@@ -58,13 +58,13 @@ EOF
         wget -O s6-overlay-$S6_VERSION-armhf.tar.gz https://github.com/just-containers/s6-overlay/releases/download/$S6_VERSION/s6-overlay-armhf.tar.gz
 
     [[ ! -f alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz ]] && \
-      wget https://nl.alpinelinux.org/alpine/$ALPINE_BRANCH/releases/armhf/alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz
+        wget https://nl.alpinelinux.org/alpine/$ALPINE_BRANCH/releases/armhf/alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz
 
     [[ ! -f alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz.sha256 ]] && \
-      wget -q https://nl.alpinelinux.org/alpine/$ALPINE_BRANCH/releases/armhf/alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz.sha256
+        wget -q https://nl.alpinelinux.org/alpine/$ALPINE_BRANCH/releases/armhf/alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz.sha256
 
     [[ ! -f alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz.asc ]] && \
-      wget -q https://nl.alpinelinux.org/alpine/$ALPINE_BRANCH/releases/armhf/alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz.asc
+        wget -q https://nl.alpinelinux.org/alpine/$ALPINE_BRANCH/releases/armhf/alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz.asc
 
     if [[  $(sha256sum -c  alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz.sha256) ]] ; then
         echo "Checksum: OK"
