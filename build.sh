@@ -7,14 +7,14 @@ if  [[ "$(which jq)" = "" ]]; then
 fi
 TZ=""
 while [ "$TZ" = "" ]
-do    
+do
     TZ="America/Chicago"
     [[ -f TIMEZONE ]] && source TIMEZONE
     TZ=$(whiptail --inputbox "Default timezone" 8 78 "$TZ" --title "Alpine Builder" 3>&1 1>&2 2>&3)
-   exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
+    exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
     if [[ ! "$(grep -c -w "$TZ" root/zone.csv )" = "1" ]]; then
         TIMEZONES=( $(cat root/zone.csv | cut -d, -f3|sort| sed 's/\"//g'|awk '!/^ / && NF {print $1 " [] off"}') )
-        TZ=$(whiptail --title "Timezone Config" --radiolist --separate-output "Select Timezone" 20 48 12 "${TIMEZONES[@]}" 3>&1 1>&2 2>&3)    
+        TZ=$(whiptail --title "Timezone Config" --radiolist --separate-output "Select Timezone" 20 48 12 "${TIMEZONES[@]}" 3>&1 1>&2 2>&3)
         exitstatus=$?; if [ $exitstatus = 1 ]; then exit 1; fi
     fi
 done
@@ -35,7 +35,7 @@ for RELEASE in $BUILDLIST; do
     ALPINE_BRANCH=$(./yaml2json.py < latest-releases.yaml | jq '.[]|select(.flavor == "alpine-minirootfs")|.branch'| sed 's/\"//g')
     MIRROR="http://dl-cdn.alpinelinux.org/alpine"
     PACKAGES="alpine-baselayout,alpine-keys,apk-tools,libc-utils"
-    cat << EOF > options 
+    cat << EOF > options
 export RELEASE="$ALPINE_BRANCH"
 export MIRROR="$MIRROR"
 export PACKAGES="$PACKAGES"
@@ -49,7 +49,7 @@ ADD s6-overlay-$S6_VERSION-armhf.tar.gz /
 COPY root /root/
 RUN apk --no-cache add bash bash-completion nano git tzdata
 RUN chmod 0700 /root/bin/tzconfig && echo "$TZ" > /etc/timezone; cp /usr/share/zoneinfo/$TZ /etc/localtime && exit 0 ; exit 1
-RUN apk del tzdata 
+RUN apk del tzdata
 ENTRYPOINT ["/init"]
 CMD ["/bin/bash"]
 EOF
@@ -62,7 +62,7 @@ EOF
 
     [[ ! -f alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz.sha256 ]] && \
       wget -q https://nl.alpinelinux.org/alpine/$ALPINE_BRANCH/releases/armhf/alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz.sha256
-     
+
     [[ ! -f alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz.asc ]] && \
       wget -q https://nl.alpinelinux.org/alpine/$ALPINE_BRANCH/releases/armhf/alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz.asc
 
@@ -72,7 +72,7 @@ EOF
         echo "Checksum: INVALID...Build Terminated"
         exit 2
     fi
-    if [[ ! $(gpg --fingerprint 293ACD0907D9495A 2>/dev/null) ]] ; then 
+    if [[ ! $(gpg --fingerprint 293ACD0907D9495A 2>/dev/null) ]] ; then
         echo "Importing NCOPA key"
         gpg --import ncopa.asc
     fi
