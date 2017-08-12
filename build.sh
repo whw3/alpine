@@ -91,4 +91,5 @@ EOF
     cat options
     docker build -t whw3/alpine:$ALPINE_VERSION .
     docker tag whw3/alpine:$ALPINE_VERSION whw3/alpine:$RELEASE
+    [[ "$BRANCH" = "latest-stable" ]] && docker tag whw3/alpine:$ALPINE_VERSION whw3/alpine:latest
 done
