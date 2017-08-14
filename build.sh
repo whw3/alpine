@@ -47,6 +47,7 @@ FROM scratch
 ADD alpine-minirootfs-$ALPINE_VERSION-armhf.tar.gz /
 ADD s6-overlay-$S6_VERSION-armhf.tar.gz /
 COPY root /root/
+COPY 01-docker-entrypoint.sh /etc/cont-init.d
 RUN apk --no-cache add bash bash-completion nano git tzdata
 RUN chmod 0700 /root/bin/tzconfig && echo "$TZ" > /etc/timezone; cp /usr/share/zoneinfo/$TZ /etc/localtime && exit 0 ; exit 1
 RUN apk del tzdata
