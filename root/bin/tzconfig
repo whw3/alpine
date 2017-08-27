@@ -15,4 +15,4 @@ do
     fi
 done
 echo "$TZ" > /etc/timezone; cp /usr/share/zoneinfo/$TZ /etc/localtime
-apk del tzdata newt
+apk del tzdata

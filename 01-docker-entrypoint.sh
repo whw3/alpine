@@ -1,6 +1,8 @@
 #!/usr/bin/with-contenv bash
-if [[ -r /usr/local/bin/docker-entrypoint ]]; then
+if [[ -x /usr/local/bin/docker-entrypoint ]]; then
     exec /usr/local/bin/docker-entrypoint
-elif [[ -r /docker-entrypoint ]]
+elif [[ -x /docker-entrypoint ]]; then
     exec /docker-entrypoint
+else [[ -x /entrypoint.sh ]]; then
+    exec /entrypoint.sh
 fi
