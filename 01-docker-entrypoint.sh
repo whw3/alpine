@@ -3,6 +3,6 @@ if [[ -x /usr/local/bin/docker-entrypoint ]]; then
     exec /usr/local/bin/docker-entrypoint
 elif [[ -x /docker-entrypoint ]]; then
     exec /docker-entrypoint
-else [[ -x /entrypoint.sh ]]; then
+elif [[ -x /entrypoint.sh ]]; then
     exec /entrypoint.sh
 fi
